@@ -1,6 +1,9 @@
 <?php
 if(isset($argv[1])){
 	switch($argv[1]){
+		case "version"  :
+			echo json_encode("0.01");
+		exit;
 		case "equipment" :
 			getEquipment($argv);
 		exit;
