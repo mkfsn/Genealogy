@@ -29,6 +29,10 @@ if(isset($argv[1])){
 				}
 
 			}
+		exit;
+		case "crs_speech" :
+			require('crs/crs_speech.php');
+		exit;
 	}
 }else{
 	header("HTTP/1.1 200 OK");
