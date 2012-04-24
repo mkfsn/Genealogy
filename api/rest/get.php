@@ -33,6 +33,9 @@ if(isset($argv[1])){
 		case "crs_speech" :
 			require('crs/crs_speech.php');
 		exit;
+		case "tele_fee" :
+			require("tele_fee/query_hinet.php");
+		exit;
 	}
 }else{
 	header("HTTP/1.1 200 OK");
