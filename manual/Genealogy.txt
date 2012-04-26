@@ -1,0 +1,8 @@
+version
+
+    顯示目前版本號    
+
+crs_speech/[STUID]
+
+    顯示通識講座聽講紀錄
+
