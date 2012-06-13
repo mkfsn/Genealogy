@@ -36,6 +36,12 @@ if(isset($argv[1])){
 		case "tele_fee" :
 			require("tele_fee/query_hinet.php");
 		exit;
+		case "car_nsysu":
+			require("car/car.php");
+		exit;
+		case "sport_nsysu":
+			require("sport/sport.php");
+		exit;
 	}
 }else{
 	header("HTTP/1.1 200 OK");
