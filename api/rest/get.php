@@ -40,7 +40,19 @@ if(isset($argv[1])){
 			require("car/car.php");
 		exit;
 		case "sport_nsysu":
-			require("sport/sport.php");
+			require("sport/sport.php");	
+		exit;
+		case "db_api":
+			require('db_api/dbApi.php');
+		exit;
+		case "temprature":
+			require("state/cpu2.php");
+		exit;
+		case "bell":
+			require("bell/bell.php");
+		exit;
+		case "power":
+			require("power/power.php");
 		exit;
 	}
 }else{
