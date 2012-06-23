@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="http://a.api.gene.cdpa.tw/Genealogy/api/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="http://a.api.gene.cdpa.tw/Genealogy/api/clock.js"></script>
+		<script type="text/javascript">
+		var timeCounter = 3;
+		var cntOn = -1;
+		var nowState = false;
+		$(document).ready(function(){
+			draw();
+			setInterval("timetick()",1000);	
+			
+			$("#btnCoolerOn").click(powerOn);
+			$("#btnCoolerOff").click(powerOff);
+			$("#lblAutoOn").hide();
+		});
+
+		function timetick(){
+			$("#counter").html(timeCounter);
+			timeCounter--;
+			if(timeCounter == -1){
+				timeCounter = 3;
+			
+			
+				getTemprature(function(res){$("#temp").html(res["avg"]);});
+				var nowTemp = $("#temp").html();
+				var settedTemp = $("#at").val();
+				if(settedTemp > nowTemp){
+					$("#signal").attr('src','http://a.api.gene.cdpa.tw/Genealogy/api/green_light.png');
+					if(nowState)$("#btnCoolerOff").click();		
+				}else{
+					$("#signal").attr('src','http://a.api.gene.cdpa.tw/Genealogy/api/red_light.png');
+					bell();
+					if(!nowState)cntOn = 3;
+				}
+
+			}
+			if(cntOn == -1){
+				$("#cntON").html("");
+			}else{
+				$("#cntON").html(cntOn);
+				cntOn--;
+				if(cntOn == -1){
+					$("#lblAutoOn").show();
+					$("#btnCoolerOn").click();	
+				}
+			}
+		}
+
+		function bell(){
+		$.ajax({url:'http://a.api.gene.cdpa.tw/Genealogy/api/index.php/bell'});
+
+		}
+		function powerOn(){
+		$.ajax({url:'http://a.api.gene.cdpa.tw/Genealogy/api/index.php/power/on'});cntOn=-1;
+		nowState = true;
+		}
+			
+		function powerOff(){
+		$.ajax({url:'http://a.api.gene.cdpa.tw/Genealogy/api/index.php/power/off'});cntOn=-1;
+		nowState = false;
+		$("#lblAutoOn").hide();
+		}
+		function getTemprature(func){
+		$.ajax({url:'http://a.api.gene.cdpa.tw/Genealogy/api/index.php/temprature',dataType:'json',
+			success:func});
+
+		}
+
+		</script>
+		<meta charset="utf-8">
+		<style type="text/css">
+			body{
+				margin:0;
+			}
+			#panelClock{
+				background : white;
+				height:300px;
+				text-align:center; 
+				padding:50px;
+			}
+			#example{
+				margin:auto;
+			}
+
+			#panelControl{
+				background : green;
+				height:400px;
+			}
+			#layoutLeft{width : 50%;float:left;}
+			#layoutRight{width:50%;float:right;margin-top:-20px;}
+
+			#panelCooler{
+				cursor:pointer;
+				background:purple;
+				height:200px;
+			}
+
+			#panelSignal{
+				background:black;
+				height:180px;
+				padding:10px;
+				text-align:center;
+			}
+			.tempLebel{
+				text-align:center;
+				font-size:30px;
+				padding:30px;
+				background:pink;
+				margin:20px;
+			}
+			.btnCooler{
+				height:170px;float:left;width:50%;font-size:50px;text-align:center;padding-top:30px;
+			}
+			#btnCoolerOn{background:blue;}
+			#btnCoolerOff{background:red;}
+		</style>
+	
+	
+	</head>
+	
+
+
+	<body>
+		<div id="layoutLeft">
+			<div id="panelClock">
+			<canvas id="example" height="300" width="300">The &lt;canvas&gt; element is not supported by your browser!</canvas>
+			</div>
+
+			<div id="panelCooler">
+				<div id="btnCoolerOn" class="btnCooler">ON<br/><span id="cntON"></span><span id="lblAutoOn">AUTO ON</span></div>
+				<div id="btnCoolerOff" class="btnCooler" >OFF</div>
+			</div>
+		</div>
+		<div id="layoutRight">
+			<div id="panelControl">
+				<div id="textTemp" class="tempLebel">Now : <span id="temp">38</span> ℃</div>
+				<div id="textUpperBound" class="tempLebel">Set fan at:<input id="at" style="width:100px;height:30px;font-size:30px;" maxlength="3"> ℃</div>
+				<div id="textRenewCounter" class="tempLebel">Update in <span id="counter">3</span> sec.</div>
+			</div>
+			<div id="panelSignal">
+				<img id="signal" src="http://a.api.gene.cdpa.tw/Genealogy/api/green_light.png"/>	
+			</div>
+		</div>
+
+	</body>
+
+</html>
